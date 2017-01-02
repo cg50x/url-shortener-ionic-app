@@ -31,5 +31,4 @@ function ($http) {
 		getShortURL: getShortURL,
 		createShortURL: createShortURL
 	};
-
 }]);
