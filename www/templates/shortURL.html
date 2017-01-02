@@ -1,7 +1,11 @@
 <ion-view title="Short URL" id="page5">
   <ion-content padding="true" class="has-header">
     <h2 id="shortURL-heading2" style="color:#000000;">{{ vm.headerText }}</h2>
-    <button id="shortURL-button7" class="button button-positive  button-block" ng-click="vm.openLinkURL(vm.linkURL)">Visit Link</button>
+    <a
+      id="shortURL-button7"
+      class="button button-positive button-block"
+      href-inappbrowser
+      href="{{ vm.linkURL }}">Visit Link</a>
     <h4 id="shortURL-heading3" style="color:#000000;">Original URL</h4>
     <div id="shortURL-markdown7" class="show-list-numbers-and-dots">
       <p style="color:#000000;">{{ vm.originalURLText }}</p>
