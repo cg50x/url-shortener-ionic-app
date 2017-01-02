@@ -16,6 +16,9 @@ $scope.$on('$ionicView.beforeEnter', function () {
 				shortURLID: shortURL['short_url_id']
 			};
 		});
+		// Reverse list items so that the short urls are listed from newest to oldest.
+		// TODO expose created_on timestamp in server response and sort by created_on instead
+		vm.shortURLListItems.reverse();
 	});
 });
 
