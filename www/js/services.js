@@ -1,50 +1,37 @@
-angular.module('starter.services', [])
+angular.module('app.services', [])
 
-.factory('Chats', function() {
-  // Might use a resource here that returns a JSON array
+.factory('ShortURLAPI', ['$http',
 
-  // Some fake testing data
-  var chats = [{
-    id: 0,
-    name: 'Ben Sparrow',
-    lastText: 'You on your way?',
-    face: 'img/ben.png'
-  }, {
-    id: 1,
-    name: 'Max Lynx',
-    lastText: 'Hey, it\'s me',
-    face: 'img/max.png'
-  }, {
-    id: 2,
-    name: 'Adam Bradleyson',
-    lastText: 'I should buy a boat',
-    face: 'img/adam.jpg'
-  }, {
-    id: 3,
-    name: 'Perry Governor',
-    lastText: 'Look at my mukluks!',
-    face: 'img/perry.png'
-  }, {
-    id: 4,
-    name: 'Mike Harrington',
-    lastText: 'This is wicked good ice cream.',
-    face: 'img/mike.png'
-  }];
+function ($http) {
 
-  return {
-    all: function() {
-      return chats;
-    },
-    remove: function(chat) {
-      chats.splice(chats.indexOf(chat), 1);
-    },
-    get: function(chatId) {
-      for (var i = 0; i < chats.length; i++) {
-        if (chats[i].id === parseInt(chatId)) {
-          return chats[i];
-        }
-      }
-      return null;
-    }
-  };
-});
+	var BASE_URL = 'https://radiant-oasis-85887.herokuapp.com/api';
+
+	function getShortURLs () {
+		return $http.get(BASE_URL + '/short_urls').then(function (response) {
+			return response.data;
+		});
+	}
+
+	function getShortURL (shortURLID) {
+		return $http.get(BASE_URL + '/short_urls/' + shortURLID).then(function (response) {
+			return response.data;
+		});
+	}
+
+	function createShortURL (longURL) {
+		return $http.post(BASE_URL + '/short_urls', {
+			params: {
+				'original_url': longURL
+			}
+		}).then(function (response) {
+			return response.data;
+		});
+	}
+
+	return {
+		getShortURLs: getShortURLs,
+		getShortURL: getShortURL,
+		createShortURL: createShortURL
+	};
+
+}]);

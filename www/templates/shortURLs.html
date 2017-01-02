@@ -1,0 +1,13 @@
+<ion-view title="Short URLs" id="page2">
+  <ion-content padding="true" class="has-header">
+    <ion-list id="shortURLs-list1">
+      <ion-item
+      	class="item-icon-right"
+      	ng-repeat="listItem in vm.shortURLListItems track by listItem.shortURLID"
+      	ui-sref="tabsController.shortURL({ shortURLID: listItem.shortURLID })">
+        {{ listItem.label }}
+        <i class="icon ion-chevron-right icon-accessory"></i>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>
