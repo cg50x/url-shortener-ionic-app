@@ -2,8 +2,10 @@
   <ion-content padding="true" class="has-header">
     <form id="createShortURL-form2" class="list">
       <label class="item item-input" id="createShortURL-textarea2">
-        <span class="input-label">URL</span><textarea placeholder="Enter URL here..."></textarea></label>
+        <span class="input-label">URL</span>
+        <textarea ng-model="vm.longURLInput" placeholder="Enter URL here..."></textarea>
+      </label>
     </form>
-    <button id="createShortURL-button8" class="button button-balanced  button-block">Create</button>
+    <button id="createShortURL-button8" class="button button-balanced  button-block" ng-click="vm.onClickCreateButton()">Create</button>
   </ion-content>
 </ion-view>

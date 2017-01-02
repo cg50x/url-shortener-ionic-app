@@ -20,9 +20,7 @@ function ($http) {
 
 	function createShortURL (longURL) {
 		return $http.post(BASE_URL + '/short_urls', {
-			params: {
-				'original_url': longURL
-			}
+			'original_url': longURL
 		}).then(function (response) {
 			return response.data;
 		});
