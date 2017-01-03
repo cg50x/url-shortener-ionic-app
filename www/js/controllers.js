@@ -1,9 +1,9 @@
 angular.module('app.controllers', ['app.services', 'app.repositories'])
   
-.controller('shortURLsCtrl', ['$scope', '$stateParams', 'ShortURLAPI', 'ShortURLRepository',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('shortURLsCtrl', ['$scope', '$stateParams', 'ShortURLRepository',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams, ShortURLAPI, ShortURLRepository) {
+function ($scope, $stateParams, ShortURLRepository) {
 
 var vm = {};
 $scope.vm = vm;
@@ -24,10 +24,10 @@ $scope.$on('$ionicView.beforeEnter', function () {
 
 }])
    
-.controller('createShortURLCtrl', ['$scope', '$stateParams', '$ionicPopup', 'ShortURLAPI', 'ShortURLRepository',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('createShortURLCtrl', ['$scope', '$stateParams', '$ionicPopup', 'ShortURLRepository',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams, $ionicPopup, ShortURLAPI, ShortURLRepository) {
+function ($scope, $stateParams, $ionicPopup, ShortURLRepository) {
 
 var vm = {};
 $scope.vm = vm;
@@ -50,10 +50,10 @@ vm.onClickCreateButton = function () {
 
 }])
       
-.controller('shortURLCtrl', ['$scope', '$stateParams', 'ShortURLAPI', 'ShortURLRepository',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('shortURLCtrl', ['$scope', '$stateParams', 'ShortURLRepository',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams, ShortURLAPI, ShortURLRepository) {
+function ($scope, $stateParams, ShortURLRepository) {
 
 var vm = {};
 $scope.vm = vm;
