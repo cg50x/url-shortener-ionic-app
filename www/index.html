@@ -52,16 +52,33 @@
       }
     </style>
 
-    <script src="js/app.js"></script>
-    <script src="js/controllers.js"></script>
-    <script src="js/routes.js"></script>
+
+    <script src="js/app.module.js"></script>
+    <script src="js/app.config.js"></script>
+    <script src="js/app.run.js"></script>
     
-     
-    <script src="js/directives.js"></script>
-     
-    <script src="js/services.js"></script>
-    <script src="js/repositories.js"></script>
+    <script src="js/controllers/controllers.module.js"></script>
+    <script src="js/controllers/create-short-url.controller.js"></script>
+    <script src="js/controllers/short-url.controller.js"></script>
+    <script src="js/controllers/short-urls.controller.js"></script>
     
+    <script src="js/routes/routes.module.js"></script>
+    <script src="js/routes/routes.config.js"></script>
+    <script src="js/routes/create-short-url.route.js"></script>
+    <script src="js/routes/short-urls.route.js"></script>
+    <script src="js/routes/short-url.route.js"></script>
+    <script src="js/routes/tabs-controller.route.js"></script>
+
+    <script src="js/directives/directives.module.js"></script>
+    <script src="js/directives/blank.directive.js"></script>
+    <script src="js/directives/disable-side-menu-drag.directive.js"></script>
+    <script src="js/directives/href-inappbrowser.directive.js"></script>
+     
+    <script src="js/services/services.module.js"></script>
+    <script src="js/services/short-url-api.service.js"></script>
+
+    <script src="js/repositories/repositories.module.js"></script>
+    <script src="js/repositories/short-url-repository.service.js"></script>
 
     <!-- Only required for Tab projects w/ pages in multiple tabs 
     <script src="lib/ionicuirouter/ionicUIRouter.js"></script>

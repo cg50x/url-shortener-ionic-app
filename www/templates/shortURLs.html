@@ -3,7 +3,7 @@
     <ion-list id="shortURLs-list1">
       <ion-item
       	class="item-icon-right"
-      	ng-repeat="listItem in vm.shortURLListItems track by listItem.shortURLID"
+      	ng-repeat="listItem in $ctrl.vm.shortURLListItems track by listItem.shortURLID"
       	ui-sref="tabsController.shortURL({ shortURLID: listItem.shortURLID })">
         {{ listItem.label }}
         <i class="icon ion-chevron-right icon-accessory"></i>

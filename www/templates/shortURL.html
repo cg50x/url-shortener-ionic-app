@@ -1,16 +1,16 @@
 <ion-view title="Short URL" id="page5">
   <ion-content padding="true" class="has-header">
-    <h2 id="shortURL-heading2" style="color:#000000;">{{ vm.headerText }}</h2>
+    <h2 id="shortURL-heading2" style="color:#000000;">{{ $ctrl.vm.headerText }}</h2>
     <a
       id="shortURL-button7"
       class="button button-positive button-block"
       href-inappbrowser
-      href="{{ vm.linkURL }}">Visit Link</a>
+      href="{{ $ctrl.vm.linkURL }}">Visit Link</a>
     <h4 id="shortURL-heading3" style="color:#000000;">Short URL</h4>
-    <textarea class="short-url-text">{{ vm.linkURL }}</textarea>
+    <textarea class="short-url-text">{{ $ctrl.vm.linkURL }}</textarea>
     <h4 id="shortURL-heading3" style="color:#000000;">Original URL</h4>
     <div id="shortURL-markdown7" class="show-list-numbers-and-dots">
-      <p style="color:#000000;">{{ vm.originalURLText }}</p>
+      <p style="color:#000000;">{{ $ctrl.vm.originalURLText }}</p>
     </div>
   </ion-content>
 </ion-view>
