@@ -5,6 +5,7 @@ angular.module('app.repositories')
 	.service('ShortURLRepository', ShortURLRepository);
 
 var depNames = [
+	'$ionicPlatform',
 	'$q',
 	'$window',
 	'ShortURLAPI'
@@ -21,15 +22,7 @@ function ShortURLRepository () {
 		self[depNames[index]] = dependency;
 	});
 
-	// Initializing the persistent cache
-	self._ShortURLStore = self.$window.localforage.createInstance({
-		driver: [
-			localforage.LOCALSTORAGE,
-			localforage.INDEXEDDB,
-			localforage.WEBSQL
-		],
-		name: 'ShortURLs'
-	});
+	self._initializeStore();
 }
 ShortURLRepository.$inject = depNames;
 
@@ -77,6 +70,25 @@ ShortURLRepository.prototype.createShortURL = function createShortURL (longURL) 
 // ==============================================================================
 // Private Methods
 // ==============================================================================
+
+// Initializes the persistent cache
+ShortURLRepository.prototype._initializeStore = function _initializeStore () {
+	var self = this;
+	var localforage = self.$window.localforage;
+	return self.$ionicPlatform.ready().then(function () {
+		return localforage.defineDriver(self.$window.cordovaSQLiteDriver);
+	}).then(function () {
+		self._ShortURLStore = localforage.createInstance({
+			name: 'ShortURLs',
+			driver: [
+				self.$window.cordovaSQLiteDriver._driver,
+				localforage.LOCALSTORAGE,
+				localforage.INDEXEDDB,
+				localforage.WEBSQL
+			]
+		});
+	});
+};
 
 // Returns a promise
 ShortURLRepository.prototype._setCacheItem = function _setCacheItem (cacheKey, shortURL) {
