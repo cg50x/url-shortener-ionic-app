@@ -4,9 +4,10 @@
 angular.module('app.routes')
 	.config(function($stateProvider) {
 	$stateProvider.state('tabsController', {
-		url: '/page1',
+		url: '',
 		templateUrl: 'templates/tabsController.html',
-		abstract:true
+		abstract: true,
+		controller: 'RootController'
 	});
 });
 

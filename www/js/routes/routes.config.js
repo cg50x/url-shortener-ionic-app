@@ -1,9 +1,9 @@
 (function () {
 'use strict';
 
-angular.module('app.routes', [])
+angular.module('app.routes')
 	.config(function ($urlRouterProvider) {
-	$urlRouterProvider.otherwise('/page1/short_urls')
+	$urlRouterProvider.otherwise('/short_urls');
 });
 
 })();
