@@ -9,7 +9,6 @@ var depNames = [
 	'SHORT_URL_API_BASE_URL',
 
 	// Providers
-	'$sceDelegateProvider',
 	'ShortURLAPIProvider',
 ];
 
@@ -20,11 +19,6 @@ function AppConfig () {
 		deps[depNames[index]] = dependency;
 	});
 
-	deps.$sceDelegateProvider.resourceUrlWhitelist([
-		'self',
-		'*://www.youtube.com/**',
-		'*://player.vimeo.com/video/**'
-	]);
 	deps.ShortURLAPIProvider.setBaseURL(deps.SHORT_URL_API_BASE_URL);
 }
 AppConfig.$inject = depNames;
