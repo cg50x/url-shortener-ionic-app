@@ -2,19 +2,34 @@
 'use strict';
 
 angular.module('app')
-	.run(function ($window, $ionicPlatform) {
-	$ionicPlatform.ready(function () {
+	.run(AppRun);
+
+var depNames = [
+	'$window',
+	'$ionicPlatform',
+	'ShortURLAPI'
+];
+
+function AppRun () {
+	var deps = {};
+	[].forEach.call(arguments, function (dependency, index) {
+		deps[depNames[index]] = dependency;
+	});
+	deps.$ionicPlatform.ready(function () {
 		// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
 		// for form inputs)
-		if ($window.cordova && $window.cordova.plugins && $window.cordova.plugins.Keyboard) {
-			$window.cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-			$window.cordova.plugins.Keyboard.disableScroll(true);
+		var cordova = deps.$window.cordova;
+		if (cordova && cordova.plugins && cordova.plugins.Keyboard) {
+			cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+			cordova.plugins.Keyboard.disableScroll(true);
 		}
-		if ($window.StatusBar) {
+		if (deps.$window.StatusBar) {
 			// org.apache.cordova.statusbar required
-			StatusBar.styleDefault();
+			deps.$window.StatusBar.styleDefault();
 		}
 	});
-});
+	deps.ShortURLAPI.setAuthToken('12345');
+}
+AppRun.$inject = depNames;
 
 })();

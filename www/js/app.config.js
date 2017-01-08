@@ -5,10 +5,7 @@ angular.module('app')
 	.config(AppConfig);
 
 var depNames = [
-	// Constants
 	'SHORT_URL_API_BASE_URL',
-
-	// Providers
 	'ShortURLAPIProvider',
 ];
 
