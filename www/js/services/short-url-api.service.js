@@ -2,14 +2,31 @@
 'use strict';
 
 angular.module('app.services')
-	.service('ShortURLAPI', ShortURLAPI);
+	.provider('ShortURLAPI', ShortURLAPIProvider);
 
 var depNames = [
 	'$http'
 ];
 
 // ==============================================================================
-// Constructor
+// ShortURLAPI Provider Recipe
+// ==============================================================================
+
+function ShortURLAPIProvider () {
+	var baseURLToUse;
+	this.setBaseURL = function setBaseURL (baseURL) {
+		baseURLToUse = baseURL;
+	};
+	this.$get = depNames.concat(function () {
+		var dependencies = Array.prototype.slice.call(arguments);
+		var serviceInstance = new (Function.prototype.bind.apply(ShortURLAPI, [null].concat(dependencies)))();
+		serviceInstance._BASE_URL = baseURLToUse;
+		return serviceInstance;
+	});
+}
+
+// ==============================================================================
+// ShortURLAPI Class Constructor
 // ==============================================================================
 
 function ShortURLAPI () {
@@ -18,9 +35,6 @@ function ShortURLAPI () {
 	[].forEach.call(arguments, function (dependency, index) {
 		self[depNames[index]] = dependency;
 	});
-
-	// TODO should be set by a constant or via provider in app.config
-	self.BASE_URL = 'https://radiant-oasis-85887.herokuapp.com/api';
 }
 ShortURLAPI.$inject = depNames;
 
@@ -30,21 +44,21 @@ ShortURLAPI.$inject = depNames;
 
 ShortURLAPI.prototype.getShortURLs = function getShortURLs () {
 	var self = this;
-	return self.$http.get(self.BASE_URL + '/short_urls').then(function (response) {
+	return self.$http.get(self._BASE_URL + '/short_urls').then(function (response) {
 		return response.data;
 	});
 };
 
 ShortURLAPI.prototype.getShortURL = function getShortURL (shortURLID) {
 	var self = this;
-	return self.$http.get(self.BASE_URL + '/short_urls/' + shortURLID).then(function (response) {
+	return self.$http.get(self._BASE_URL + '/short_urls/' + shortURLID).then(function (response) {
 		return response.data;
 	});
 };
 
 ShortURLAPI.prototype.createShortURL = function (longURL) {
 	var self = this;
-	return self.$http.post(self.BASE_URL + '/short_urls', {
+	return self.$http.post(self._BASE_URL + '/short_urls', {
 		'original_url': longURL
 	}).then(function (response) {
 		return response.data;
