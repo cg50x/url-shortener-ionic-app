@@ -7,6 +7,7 @@ angular.module('app.controllers')
 var depNames = [
 	'$scope',
 	'$stateParams',
+	'$timeout',
 	'ShortURLRepository'
 ];
 
@@ -32,7 +33,32 @@ ShortURLsController.$inject = depNames;
 
 ShortURLsController.prototype.onIonicViewBeforeEnter = function onIonicViewBeforeEnter () {
 	var self = this;
-	self.ShortURLRepository.getShortURLs().then(function (shortURLs) {
+	self.vm.isLoadingData = true;
+	self._refreshShortURLView().catch(function (err) {
+		// Do something with the error
+	}).finally(function () {
+		self.vm.isLoadingData = false;
+	});
+};
+
+ShortURLsController.prototype.onPullIonRefresher = function onPullIonRefresher () {
+	var self = this;
+	self._refreshShortURLView().catch(function (err) {
+		// Do something with the error
+	}).finally(function () {
+		self.$scope.$broadcast('scroll.refreshComplete');
+	});
+};
+
+// ==============================================================================
+// Private Methods
+// ==============================================================================
+
+ShortURLsController.prototype._refreshShortURLView = function _refreshShortURLView () {
+	var self = this;
+	return self.$timeout(function () {}, 5000).then(function () {
+		return self.ShortURLRepository.getShortURLs();
+	}).then(function (shortURLs) {
 		self.vm.shortURLListItems = shortURLs.map(function (shortURL) {
 			return {
 				label: '/u/' + shortURL['short_url_id'] + ' - ' + shortURL['original_url'],

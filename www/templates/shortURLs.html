@@ -1,6 +1,7 @@
 <ion-view title="Short URLs" id="page2">
   <ion-content padding="true" class="has-header">
-    <ion-list id="shortURLs-list1">
+    <ion-refresher ng-if="$ctrl.vm.shortURLListItems.length > 0" pulling-text="Pull to refresh..." on-refresh="$ctrl.onPullIonRefresher()"></ion-refresher>
+    <ion-list id="shortURLs-list1" ng-if="$ctrl.vm.shortURLListItems.length > 0">
       <ion-item
       	class="item-icon-right"
       	ng-repeat="listItem in $ctrl.vm.shortURLListItems track by listItem.shortURLID"
@@ -8,6 +9,12 @@
         {{ listItem.label }}
         <i class="icon ion-chevron-right icon-accessory"></i>
       </ion-item>
+    </ion-list>
+    <ion-list id="shortURLs-list2" ng-if="!$ctrl.vm.shortURLListItems && $ctrl.vm.isLoadingData">
+      <ion-item class="item-icon-right">-----</ion-item>
+      <ion-item class="item-icon-right">-----</ion-item>
+      <ion-item class="item-icon-right">-----</ion-item>
+      <ion-item class="item-icon-right">-----</ion-item>
     </ion-list>
   </ion-content>
 </ion-view>

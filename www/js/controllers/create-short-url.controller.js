@@ -5,6 +5,7 @@ angular.module('app.controllers')
 	.controller('CreateShortURLController', CreateShortURLController);
 
 var depNames = [
+	'$scope',
 	'$stateParams',
 	'$ionicPopup',
 	'ShortURLRepository'
