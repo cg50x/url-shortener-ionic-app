@@ -42,6 +42,7 @@ ShortURLController.prototype.onIonicViewBeforeEnter = function onIonicViewBefore
 };
 
 ShortURLController.prototype.openLinkURL = function openLinkURL (linkURL) {
+	var self = this;
 	self.$window.open(linkURL);
 };
 
