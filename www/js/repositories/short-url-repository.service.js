@@ -36,7 +36,7 @@ ShortURLRepository.prototype.getShortURLs = function getShortURLs () {
 	return self.ShortURLAPI.getShortURLs().then(function (shortURLs) {
 		// adding each short URL to the cache
 		shortURLs.forEach(function (shortURL) {
-			self._setCacheItem(shortURL['short_url_id'], shortURL);
+			self._setCacheItem(shortURL.shortUrlId, shortURL);
 		});
 		return shortURLs;
 	});
@@ -52,7 +52,7 @@ ShortURLRepository.prototype.getShortURL = function getShortURL (shortURLID) {
 			return cachedItem;
 		} else {
 			return self.ShortURLAPI.getShortURL(shortURLID).then(function (shortURL) {
-				self._setCacheItem(shortURL['short_url_id'], shortURL);
+				self._setCacheItem(shortURL.shortUrlId, shortURL);
 				return shortURL;
 			});
 		}
@@ -62,7 +62,7 @@ ShortURLRepository.prototype.getShortURL = function getShortURL (shortURLID) {
 ShortURLRepository.prototype.createShortURL = function createShortURL (longURL) {
 	var self = this;
 	return self.ShortURLAPI.createShortURL(longURL).then(function (shortURL) {
-		self._setCacheItem(shortURL['short_url_id'], shortURL);
+		self._setCacheItem(shortURL.shortUrlId, shortURL);
 		return shortURL;
 	});
 };

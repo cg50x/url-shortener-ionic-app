@@ -35,9 +35,9 @@ ShortURLController.prototype.onIonicViewBeforeEnter = function onIonicViewBefore
 	var self = this;
 	var shortURLID = self.$stateParams.shortURLID;
 	self.ShortURLRepository.getShortURL(shortURLID).then(function (shortURL) {
-		self.vm.headerText = '/u/' + shortURL['short_url_id'];
-		self.vm.originalURLText = shortURL['original_url'];
-		self.vm.linkURL = 'https://radiant-oasis-85887.herokuapp.com/u/' + shortURL['short_url_id'];
+		self.vm.headerText = '/u/' + shortURL.shortUrlId;
+		self.vm.originalURLText = shortURL.originalUrl;
+		self.vm.linkURL = 'https://radiant-oasis-85887.herokuapp.com/u/' + shortURL.shortUrlId;
 	});
 };
 

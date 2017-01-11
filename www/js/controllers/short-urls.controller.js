@@ -61,8 +61,8 @@ ShortURLsController.prototype._refreshShortURLView = function _refreshShortURLVi
 	}).then(function (shortURLs) {
 		self.vm.shortURLListItems = shortURLs.map(function (shortURL) {
 			return {
-				label: '/u/' + shortURL['short_url_id'] + ' - ' + shortURL['original_url'],
-				shortURLID: shortURL['short_url_id']
+				label: '/u/' + shortURL.shortUrlId + ' - ' + shortURL.originalUrl,
+				shortURLID: shortURL.shortUrlId
 			};
 		});
 		// Reverse list items so that the short urls are listed from newest to oldest.

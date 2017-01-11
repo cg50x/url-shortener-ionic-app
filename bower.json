@@ -6,6 +6,7 @@
   },
   "dependencies": {
     "localforage": "^1.4.3",
-    "localforage-cordovasqlitedriver": "localForage-cordovaSQLiteDriver#^1.5.0"
+    "localforage-cordovasqlitedriver": "localForage-cordovaSQLiteDriver#^1.5.0",
+    "lodash": "^4.17.4"
   }
 }
