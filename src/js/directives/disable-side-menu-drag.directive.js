@@ -1,10 +1,7 @@
 (function () {
 'use strict';
 
-angular.module('app.directives')
-	.directive('disableSideMenuDrag', disableSideMenuDragDirective);
-
-var depNames = [
+const depNames = [
 	'$ionicSideMenuDelegate',
 	'$rootScope'
 ];
@@ -13,20 +10,22 @@ var depNames = [
   This directive is used to disable the "drag to open" functionality of the Side-Menu
   when you are dragging a Slider component.
 */
-function disableSideMenuDragDirective ($ionicSideMenuDelegate, $rootScope) {
+function disableSideMenuDragDirective (...dependencies) {
+	// Attaching dependencies
+	let deps = depNames.reduce((deps, depName, index) => deps[depName] = dependencies[index], {});
     return {
         restrict: "A",  
         controller: ['$scope', '$element', '$attrs', function ($scope, $element, $attrs) {
 
             function stopDrag(){
-              $ionicSideMenuDelegate.canDragContent(false);
+              deps.$ionicSideMenuDelegate.canDragContent(false);
             }
 
             function allowDrag(){
-              $ionicSideMenuDelegate.canDragContent(true);
+              deps.$ionicSideMenuDelegate.canDragContent(true);
             }
 
-            $rootScope.$on('$ionicSlides.slideChangeEnd', allowDrag);
+            deps.$rootScope.$on('$ionicSlides.slideChangeEnd', allowDrag);
             $element.on('touchstart', stopDrag);
             $element.on('touchend', allowDrag);
             $element.on('mousedown', stopDrag);
@@ -37,5 +36,7 @@ function disableSideMenuDragDirective ($ionicSideMenuDelegate, $rootScope) {
 };
 disableSideMenuDragDirective.$inject = depNames;
 
+angular.module('app.directives')
+	.directive('disableSideMenuDrag', disableSideMenuDragDirective);
 
 })();

@@ -1,7 +1,7 @@
 (function () {
 'use strict';
 
-var depNames = [
+const depNames = [
 	'$http',
 	'$httpParamSerializer',
 	'_'

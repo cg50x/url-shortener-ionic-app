@@ -1,9 +1,6 @@
 (function () {
 'use strict';
 
-angular.module('app.directives')
-	.directive('hrefInappbrowser', hrefInappbrowserDirective);
-
 /*
   This directive is used to open regular and dynamic href links inside of inappbrowser.
 */
@@ -25,5 +22,8 @@ function hrefInappbrowserDirective () {
 		}
 	};
 }
+
+angular.module('app.directives')
+	.directive('hrefInappbrowser', hrefInappbrowserDirective);
 
 })();
