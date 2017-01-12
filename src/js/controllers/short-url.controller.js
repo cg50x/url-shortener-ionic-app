@@ -22,7 +22,7 @@ class ShortURLController {
 	// ==============================================================================
 
 	onIonicViewBeforeEnter () {
-		var shortURLID = this.$stateParams.shortURLID;
+		let shortURLID = this.$stateParams.shortURLID;
 		this.ShortURLRepository.getShortURL(shortURLID).then((shortURL) => {
 			this.vm.headerText = `/u/${shortURL.shortUrlId}`;
 			this.vm.originalURLText = shortURL.originalUrl;
