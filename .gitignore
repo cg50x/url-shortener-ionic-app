@@ -4,6 +4,8 @@
 node_modules/
 platforms/
 plugins/
-www/lib/
-!www/lib/ionic
-!www/lib/ionicuirouter
+src/lib/
+!src/lib/ionic
+!src/lib/ionicuirouter
+www/*
+!www/.gitkeep
