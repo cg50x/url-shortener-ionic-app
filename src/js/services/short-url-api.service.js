@@ -129,6 +129,8 @@ class ShortURLAPIProvider {
 		this._isUsingCamelCase = isEnabled;
 	}
 
+	// The function that builds the ShortURLAPI service
+	// before it's injected as a dependency
 	_factoryFunction (...dependencies) {
 		let serviceInstance = new ShortURLAPI(...dependencies);
 		serviceInstance._BASE_URL = this._baseURL;

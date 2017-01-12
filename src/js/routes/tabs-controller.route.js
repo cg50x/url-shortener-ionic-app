@@ -1,14 +1,25 @@
 (function () {
 'use strict';
 
-angular.module('app.routes')
-	.config(function($stateProvider) {
-	$stateProvider.state('tabsController', {
+const depNames = [
+	'$stateProvider'
+];
+
+function tabsControllerRouteConfig (...dependencies) {
+	// Attaching dependencies
+	let deps = {};
+	depNames.forEach((depName, index) => deps[depName] = dependencies[index]);
+
+	deps.$stateProvider.state('tabsController', {
 		url: '',
 		templateUrl: 'templates/tabsController.html',
 		abstract: true,
 		controller: 'RootController'
 	});
-});
+}
+tabsControllerRouteConfig.$inject = depNames;
+
+angular.module('app.routes')
+	.config(tabsControllerRouteConfig);
 
 })();

@@ -1,9 +1,16 @@
 (function () {
 'use strict';
 
-angular.module('app.routes')
-	.config(function($stateProvider) {
-	$stateProvider.state('tabsController.shortURL', {
+const depNames = [
+	'$stateProvider'
+];
+
+function shortURLRouteConfig (...dependencies) {
+	// Attaching dependencies
+	let deps = {};
+	depNames.forEach((depName, index) => deps[depName] = dependencies[index]);
+
+	deps.$stateProvider.state('tabsController.shortURL', {
 		url: '/short_url',
 		params: {
 			shortURLID: null
@@ -16,6 +23,10 @@ angular.module('app.routes')
 			}
 		}
 	});
-});
+}
+shortURLRouteConfig.$inject = depNames;
+
+angular.module('app.routes')
+	.config(shortURLRouteConfig);
 
 })();

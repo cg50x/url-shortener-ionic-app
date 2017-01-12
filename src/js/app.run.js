@@ -1,24 +1,21 @@
 (function () {
 'use strict';
 
-angular.module('app')
-	.run(AppRun);
-
-var depNames = [
+const depNames = [
 	'$window',
 	'$ionicPlatform',
 	'ShortURLAPI'
 ];
 
-function AppRun () {
-	var deps = {};
-	[].forEach.call(arguments, function (dependency, index) {
-		deps[depNames[index]] = dependency;
-	});
-	deps.$ionicPlatform.ready(function () {
+function AppRun (...dependencies) {
+	// Attaching dependencies
+	let deps = {};
+	depNames.forEach((depName, index) => deps[depName] = dependencies[index]);
+
+	deps.$ionicPlatform.ready(() => {
 		// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
 		// for form inputs)
-		var cordova = deps.$window.cordova;
+		let cordova = deps.$window.cordova;
 		if (cordova && cordova.plugins && cordova.plugins.Keyboard) {
 			cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
 			cordova.plugins.Keyboard.disableScroll(true);
@@ -31,5 +28,8 @@ function AppRun () {
 	deps.ShortURLAPI.setAuthToken('12345');
 }
 AppRun.$inject = depNames;
+
+angular.module('app')
+	.run(AppRun);
 
 })();
