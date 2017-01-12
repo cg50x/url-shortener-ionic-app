@@ -1,9 +1,6 @@
 (function () {
 'use strict';
 
-angular.module('app.controllers')
-	.controller('ShortURLController', ShortURLController);
-
 var depNames = [
 	'$scope',
 	'$stateParams',
@@ -11,39 +8,31 @@ var depNames = [
 	'ShortURLRepository'
 ];
 
-// ==============================================================================
-// Constructor
-// ==============================================================================
+class ShortURLController {
+	constructor (...dependencies) {
+		// Attaching dependencies
+		depNames.forEach((depName, index) => this[depName] = dependencies[index]);
 
-function ShortURLController () {
-	var self = this;
-	// Attaching dependencies
-	[].forEach.call(arguments, function (dependency, index) {
-		self[depNames[index]] = dependency;
-	});
+		this.vm = {};
+		this.$scope.$on('$ionicView.beforeEnter', this.onIonicViewBeforeEnter.bind(this));
+	}
 
-	self.vm = {};
-	self.$scope.$on('$ionicView.beforeEnter', self.onIonicViewBeforeEnter.bind(self));
+	// ==============================================================================
+	// Event Handlers
+	// ==============================================================================
+
+	onIonicViewBeforeEnter () {
+		var shortURLID = this.$stateParams.shortURLID;
+		this.ShortURLRepository.getShortURL(shortURLID).then((shortURL) => {
+			this.vm.headerText = `/u/${shortURL.shortUrlId}`;
+			this.vm.originalURLText = shortURL.originalUrl;
+			this.vm.linkURL = `https://radiant-oasis-85887.herokuapp.com/u/${shortURL.shortUrlId}`;
+		});
+	}
 }
 ShortURLController.$inject = depNames;
 
-// ==============================================================================
-// Event Handlers
-// ==============================================================================
-
-ShortURLController.prototype.onIonicViewBeforeEnter = function onIonicViewBeforeEnter () {
-	var self = this;
-	var shortURLID = self.$stateParams.shortURLID;
-	self.ShortURLRepository.getShortURL(shortURLID).then(function (shortURL) {
-		self.vm.headerText = '/u/' + shortURL.shortUrlId;
-		self.vm.originalURLText = shortURL.originalUrl;
-		self.vm.linkURL = 'https://radiant-oasis-85887.herokuapp.com/u/' + shortURL.shortUrlId;
-	});
-};
-
-ShortURLController.prototype.openLinkURL = function openLinkURL (linkURL) {
-	var self = this;
-	self.$window.open(linkURL);
-};
+angular.module('app.controllers')
+	.controller('ShortURLController', ShortURLController);
 
 })();

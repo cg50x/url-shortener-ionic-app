@@ -1,9 +1,6 @@
 (function () {
 'use strict';
 
-angular.module('app.controllers')
-	.controller('CreateShortURLController', CreateShortURLController);
-
 var depNames = [
 	'$scope',
 	'$stateParams',
@@ -11,42 +8,38 @@ var depNames = [
 	'ShortURLRepository'
 ];
 
-// ==============================================================================
-// Constructor
-// ==============================================================================
+class CreateShortURLController {
+	constructor (...dependencies) {
+		// Attaching dependencies
+		depNames.forEach((depName, index) => this[depName] = dependencies[index]);
 
-function CreateShortURLController () {
-	var self = this;
-	// Attaching dependencies
-	[].forEach.call(arguments, function (dependency, index) {
-		self[depNames[index]] = dependency;
-	});
+		this.vm = {};
+		this.$scope.$on('$ionicView.beforeEnter', this.onIonicViewBeforeEnter.bind(this));
+	}
 
-	self.vm = {};
-	self.$scope.$on('$ionicView.beforeEnter', self.onIonicViewBeforeEnter.bind(self));
+	// ==============================================================================
+	// Event Handlers
+	// ==============================================================================
+
+	onIonicViewBeforeEnter () {
+		this.vm.longURLInput = '';
+	}
+
+	onClickCreateButton () {
+		this.ShortURLRepository.createShortURL(this.vm.longURLInput).then((shortURL) => {
+			return this.$ionicPopup.alert({
+				title: 'Short URL Created',
+				template: `Created short URL: /u/${shortURL.shortUrlId}`
+			});
+		}).then(() => {
+			// Clear out the input after the alert is dismissed.
+			this.vm.longURLInput = '';
+		});
+	}
 }
 CreateShortURLController.$inject = depNames;
 
-// ==============================================================================
-// Event Handlers
-// ==============================================================================
-
-CreateShortURLController.prototype.onIonicViewBeforeEnter = function onIonicViewBeforeEnter () {
-	var self = this;
-	self.vm.longURLInput = '';
-};
-
-CreateShortURLController.prototype.onClickCreateButton = function onClickCreateButton () {
-	var self = this;
-	self.ShortURLRepository.createShortURL(self.vm.longURLInput).then(function (shortURL) {
-		return self.$ionicPopup.alert({
-			title: 'Short URL Created',
-			template: 'Created short URL: /u/' + shortURL['short_url_id']
-		});
-	}).then(function () {
-		// Clear out the input after the alert is dismissed.
-		self.vm.longURLInput = '';
-	});
-};
+angular.module('app.controllers')
+	.controller('CreateShortURLController', CreateShortURLController);
 
 })();

@@ -1,9 +1,6 @@
 (function () {
 'use strict';
 
-angular.module('app.controllers')
-	.controller('ShortURLsController', ShortURLsController);
-
 var depNames = [
 	'$scope',
 	'$stateParams',
@@ -11,64 +8,64 @@ var depNames = [
 	'ShortURLRepository'
 ];
 
-// ==============================================================================
-// Constructor
-// ==============================================================================
+class ShortURLsController {
+	constructor (...dependencies) {
+		// Attaching dependencies
+		depNames.forEach((depName, index) => this[depName] = dependencies[index]);
 
-function ShortURLsController () {
-	var self = this;
-	// Attaching dependencies
-	[].forEach.call(arguments, function (dependency, index) {
-		self[depNames[index]] = dependency;
-	});
+		this.vm = {};
+		this.$scope.$on('$ionicView.beforeEnter', this.onIonicViewBeforeEnter.bind(this));
+	}
 
-	self.vm = {};
-	self.$scope.$on('$ionicView.beforeEnter', self.onIonicViewBeforeEnter.bind(self));
-}
-ShortURLsController.$inject = depNames;
+	// ==============================================================================
+	// Event Handlers
+	// ==============================================================================
 
-// ==============================================================================
-// Event Handlers
-// ==============================================================================
+	onIonicViewBeforeEnter () {
+		this.vm.isLoadingData = true;
+		this._refreshShortURLView().catch((err) => {
+			// Do something with the error
+		}).finally(() => {
+			this.vm.isLoadingData = false;
+		});
+	}
 
-ShortURLsController.prototype.onIonicViewBeforeEnter = function onIonicViewBeforeEnter () {
-	var self = this;
-	self.vm.isLoadingData = true;
-	self._refreshShortURLView().catch(function (err) {
-		// Do something with the error
-	}).finally(function () {
-		self.vm.isLoadingData = false;
-	});
-};
+	onPullIonRefresher () {
+		this._refreshShortURLView().catch((err) => {
+			// Do something with the error
+		}).finally(() => {
+			this.$scope.$broadcast('scroll.refreshComplete');
+		});
+	}
 
-ShortURLsController.prototype.onPullIonRefresher = function onPullIonRefresher () {
-	var self = this;
-	self._refreshShortURLView().catch(function (err) {
-		// Do something with the error
-	}).finally(function () {
-		self.$scope.$broadcast('scroll.refreshComplete');
-	});
-};
+	// ==============================================================================
+	// Private Methods
+	// ==============================================================================
 
-// ==============================================================================
-// Private Methods
-// ==============================================================================
+	_refreshShortURLView () {
+		return this.ShortURLRepository.getShortURLs().then((shortURLs) => {
+			this.vm.shortURLList = this._getShortURLListViewModel(shortURLs);
+		});
+	}
 
-ShortURLsController.prototype._refreshShortURLView = function _refreshShortURLView () {
-	var self = this;
-	return self.$timeout(function () {}, 5000).then(function () {
-		return self.ShortURLRepository.getShortURLs();
-	}).then(function (shortURLs) {
-		self.vm.shortURLListItems = shortURLs.map(function (shortURL) {
+	// Generates the view model given the short url data from the repository
+	_getShortURLListViewModel (shortURLs) {
+		let viewModel = shortURLs.map((shortURL) => {
 			return {
-				label: '/u/' + shortURL.shortUrlId + ' - ' + shortURL.originalUrl,
+				label: `/u/${shortURL.shortUrlId} - ${shortURL.originalUrl}`,
 				shortURLID: shortURL.shortUrlId
 			};
 		});
-		// Reverse list items so that the short urls are listed from newest to oldest.
-		// TODO expose created_on timestamp in server response and sort by created_on instead
-		self.vm.shortURLListItems.reverse();
-	});
-};
+		// TODO reversing the order so that the newest items show at the top.
+		// Need to expose createdOn in the server API and sort by createdOn instead.
+		viewModel.reverse();
+		return viewModel;
+	}
+}
+ShortURLsController.$inject = depNames;
+
+
+angular.module('app.controllers')
+	.controller('ShortURLsController', ShortURLsController);
 
 })();
