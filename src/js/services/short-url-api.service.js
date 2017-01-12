@@ -114,21 +114,27 @@ ShortURLAPI.$inject = depNames;
 // ShortURLAPI Provider Recipe
 // ==============================================================================
 
-function ShortURLAPIProvider () {
-	var baseURLToUse;
-	var isUsingCamelCase = false;
-	this.setBaseURL = (baseURL) => {
-		baseURLToUse = baseURL;
-	};
-	this.useCamelCaseConversion = (isEnabled) => {
-		isUsingCamelCase = isEnabled;
-	};
-	this.$get = [...depNames, (...dependencies) => {
+class ShortURLAPIProvider {
+	constructor () {
+		this._baseURL = null;
+		this._isUsingCamelCase = false;
+		this.$get = [...depNames, this._factoryFunction.bind(this)];
+	}
+
+	setBaseURL (baseURL) {
+		this._baseURL = baseURL;
+	}
+
+	useCamelCaseConversion (isEnabled) {
+		this._isUsingCamelCase = isEnabled;
+	}
+
+	_factoryFunction (...dependencies) {
 		let serviceInstance = new ShortURLAPI(...dependencies);
-		serviceInstance._BASE_URL = baseURLToUse;
-		serviceInstance._USE_CAMEL_CASE = isUsingCamelCase;
+		serviceInstance._BASE_URL = this._baseURL;
+		serviceInstance._USE_CAMEL_CASE = this._isUsingCamelCase;
 		return serviceInstance;
-	}];
+	}
 }
 
 angular.module('app.services')
