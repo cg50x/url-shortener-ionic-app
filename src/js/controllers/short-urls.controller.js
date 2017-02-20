@@ -13,6 +13,7 @@ class ShortURLsController {
 		// Attaching dependencies
 		depNames.forEach((depName, index) => this[depName] = dependencies[index]);
 
+		this._state = {};
 		this.vm = {};
 		this.$scope.$on('$ionicView.beforeEnter', this.onIonicViewBeforeEnter.bind(this));
 	}
@@ -22,16 +23,22 @@ class ShortURLsController {
 	// ==============================================================================
 
 	onIonicViewBeforeEnter () {
-		this.vm.isLoadingData = true;
-		this._refreshShortURLView().catch((err) => {
-			// Do something with the error
+		this._setState({
+			isLoadingData: true
+		});
+		this.ShortURLRepository.getShortURLs().then((shortURLs) => {
+			this._setState({shortURLs});
 		}).finally(() => {
-			this.vm.isLoadingData = false;
+			this._setState({
+				isLoadingData: false
+			});
 		});
 	}
 
 	onPullIonRefresher () {
-		this._refreshShortURLView().catch((err) => {
+		this.ShortURLRepository.getShortURLs().then((shortURLs) => {
+			this._setState({shortURLs});
+		}).catch((err) => {
 			// Do something with the error
 		}).finally(() => {
 			this.$scope.$broadcast('scroll.refreshComplete');
@@ -42,9 +49,23 @@ class ShortURLsController {
 	// Private Methods
 	// ==============================================================================
 
+	_setState (newData) {
+		this._state = Object.assign(this._state, newData);
+		this._renderViewModel();
+	}
+
+	_renderViewModel () {
+		// Render view model based on data
+		let shortURLList = this._getShortURLListViewModel(this._state.shortURLs || []);
+		this.vm = {
+			shortURLList: shortURLList,
+			isLoadingData: this._state.isLoadingData
+		};
+	}
+
 	_refreshShortURLView () {
 		return this.ShortURLRepository.getShortURLs().then((shortURLs) => {
-			this.vm.shortURLList = this._getShortURLListViewModel(shortURLs);
+			this._setState({shortURLs});
 		});
 	}
 
